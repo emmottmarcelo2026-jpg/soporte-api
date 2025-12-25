@@ -1,98 +1,196 @@
+# 🚀 Emmott Systems – Support API
+
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
+
+Backend de soporte técnico empresarial para **Emmott Systems**, diseñado para gestionar el ciclo de vida completo de incidencias y suscripciones de un ERP contable.
+
+Este proyecto va más allá de un simple CRUD: simula un entorno de producción real, aplicando arquitectura limpia, principios SOLID y patrones de diseño escalables.
+
+---
+
+## 📖 Tabla de Contenidos
+
+- [🚀 Emmott Systems – Support API](#-emmott-systems--support-api)
+  - [📖 Tabla de Contenidos](#-tabla-de-contenidos)
+  - [🧠 Contexto del Proyecto](#-contexto-del-proyecto)
+  - [✨ Funcionalidades (Diseño del Sistema)](#-funcionalidades-diseño-del-sistema)
+    - [🎫 Gestión de Tickets (Help Desk)](#-gestión-de-tickets-help-desk)
+    - [🏢 Gestión de Clientes (CRM Light)](#-gestión-de-clientes-crm-light)
+    - [💳 Suscripciones y Módulos](#-suscripciones-y-módulos)
+    - [📊 Dashboard y Métricas (Planned)](#-dashboard-y-métricas-planned)
+  - [🏗️ Arquitectura y Diseño](#️-arquitectura-y-diseño)
+    - [Diagrama de Módulos](#diagrama-de-módulos)
+    - [Principios Aplicados](#principios-aplicados)
+  - [📦 Stack Tecnológico](#-stack-tecnológico)
+  - [⚙️ Pre-requisitos](#️-pre-requisitos)
+  - [� Instalación y Configuración](#-instalación-y-configuración)
+  - [📚 Documentación API](#-documentación-api)
+  - [�️ Roadmap](#️-roadmap)
+  - [📄 Licencia](#-licencia)
+
+---
+
+## 🧠 Contexto del Proyecto
+
+**Emmott Systems** provee software contable (SaaS). A medida que la base de clientes crece, la gestión de incidencias vía email se vuelve insostenible.
+
+Este backend es la solución centralizada para el equipo de **Soporte Nivel 1 y 2**, permitiendo:
+1.  **Centralización**: Un único punto de verdad para tickets, clientes y contratos.
+2.  **Trazabilidad**: Historial completo de interacciones y cambios de estado.
+3.  **Eficiencia**: Asignación inteligente de tickets basada en la carga de trabajo y especialidad del analista.
+
+---
+
+## ✨ Funcionalidades (Diseño del Sistema)
+
+Las siguientes funcionalidades describen el diseño objetivo del sistema.
+Algunas se encuentran actualmente en desarrollo según el roadmap.
+
+### 🎫 Gestión de Tickets (Help Desk)
+- Creación de tickets con prioridades (Alta, Media, Baja) y SLA definidos.
+- Flujo de estados: `Abierto` → `En Progreso` → `En Espera` → `Resuelto` → `Cerrado`.
+- Asignación automática o manual a analistas.
+
+### 🏢 Gestión de Clientes (CRM Light)
+- Administración de empresas clientes y sus sedes.
+- Gestión de contactos autorizados para crear tickets.
+
+### 💳 Suscripciones y Módulos
+- Control de qué módulos del ERP ha contratado cada cliente (ej. Contabilidad, RRHH, Inventario).
+- Validación de soporte activo antes de permitir la creación de tickets.
+
+### 📊 Dashboard y Métricas (Planned)
+- Reportes de tickets por área.
+- Tiempos promedios de respuesta y resolución.
+
+---
+
+## 🏗️ Arquitectura y Diseño
+
+El proyecto sigue una arquitectura de **Monolito Modular**, preparando el terreno para una eventual migración a microservicios si fuese necesario.
+
+### Diagrama de Módulos
+```mermaid
+graph TD
+    A[Client Request] --> B{API Gateway / Controller}
+    B --> C[Tickets Module]
+    B --> D[Companies Module]
+    B --> E[Auth Module]
+    
+    C --> F[(PostgreSQL)]
+    D --> F
+    E --> F
+    
+    subgraph "Core Business Logic"
+    C
+    D
+    end
+    
+    subgraph "Support Logic"
+    E
+    end
+```
+
+### Principios Aplicados
+- **Domain-Driven Design (DDD) – Enfoque conceptual**: Separación clara por contextos delimitados.
+- **Dependency Injection**: Uso nativo del contenedor de NestJS para mejorar la testabilidad.
+- **DTOs (Data Transfer Objects)**: Validación estricta de datos de entrada usando `class-validator`.
+- **Repository Pattern**: Abstracción de la capa de datos con TypeORM.
+
+---
+
+## 📦 Stack Tecnológico
+
+| Area | Tecnología | Uso |
+|------|------------|-----|
+| **Core** | [NestJS](https://nestjs.com/) | Framework principal del backend |
+| **Lenguaje** | [TypeScript](https://www.typescriptlang.org/) | Tipado estático y seguridad |
+| **Base de Datos** | [PostgreSQL](https://www.postgresql.org/) | Persistencia relacional robusta |
+| **ORM** | [TypeORM](https://typeorm.io/) | Mapeo objeto-relacional |
+| **Contenerización** | [Docker](https://www.docker.com/) | Entorno de desarrollo reproducible |
+| **API Docs** | [Swagger](https://swagger.io/) | Documentación interactiva (OpenAPI 3.0) |
+| **Testing** | [Jest](https://jestjs.io/) | Unit & Integration Testing |
+
+---
+
+## ⚙️ Pre-requisitos
+
+Asegúrate de tener instalado en tu sistema:
+- **Node.js** v18 o superior.
+- **Docker Desktop** (con Docker Compose).
+- **Git**
+
+---
+
+## � Instalación y Configuración
+
+Sigue estos pasos para levantar el entorno de desarrollo localmente:
+
+1.  **Clonar el repositorio**
+    ```bash
+    git clone https://github.com/tu-usuario/soporte-api.git
+    cd soporte-api
+    ```
+
+2.  **Configurar Variables de Entorno**
+    Crea un archivo `.env` en la raíz basado en el ejemplo:
+    ```bash
+    cp .env.example .env
+    ```
+    *(Asegúrate de que las credenciales de DB coincidan con tu docker-compose)*
+
+3.  **Instalar Dependencias**
+    ```bash
+    npm install
+    ```
+
+4.  **Levantar Base de Datos (Docker)**
+    ```bash
+    docker-compose up -d
+    ```
+
+5.  **Ejecutar el Servidor**
+    ```bash
+    # Modo desarrollo (con hot-reload)
+    npm run start:dev
+    ```
+
+El servidor estará corriendo en: `http://localhost:3000`
+
+---
+
+## 📚 Documentación API
+
+La documentación interactiva de la API se genera automáticamente con Swagger.
+
+Una vez iniciada la aplicación, visita:
+👉 **[http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
+
+Aquí podrás probar los endpoints, ver los esquemas de datos y autenticarte.
+
+---
+
+## �️ Roadmap
+
+- [x] Configuración inicial del proyecto y Docker.
+- [x] Conexión a Base de Datos PostgreSQL.
+- [x] Implementación del módulo de **Empresas**.
+- [ ] Implementación de **Autenticación (JWT)**.
+- [ ] Implementación del módulo de **Tickets**.
+- [ ] Tests unitarios y de integración.
+- [ ] Pipeline CI/CD (GitHub Actions).
+
+---
+
+## 📄 Licencia
+
+Este proyecto se distribuye bajo licencia **MIT**. Puedes usarlo libremente para fines educativos o profesionales.
+
+---
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <sub>Desarrollado con ❤️ para el portafolio profesional.</sub>
 </p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
-```
-
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
