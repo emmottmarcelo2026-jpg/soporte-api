@@ -18,6 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         database: config.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true, // solo desarrollo
+        logging: true,
       }),
     }),
   ],
