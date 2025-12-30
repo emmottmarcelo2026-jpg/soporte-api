@@ -414,7 +414,12 @@ Content-Type: application/json
 - [x] Implementación del módulo de **Roles** (CRUD completo).
 - [x] Implementación del módulo de **Usuarios** (CRUD completo).
 - [x] Implementación del módulo de **Tickets**.
-- [ ] Implementación de **Autenticación (JWT)**.
+- [ ] **Autenticación (JWT)** 🔄 *En progreso*
+  - [x] Instalar dependencias (passport, jwt, bcrypt)
+  - [x] Crear estructura base del módulo Auth
+  - [ ] Implementar estrategias (Local, JWT)
+  - [ ] Implementar login y registro
+  - [ ] Proteger rutas con guards
 - [ ] Tests unitarios y de integración.
 - [ ] Pipeline CI/CD (GitHub Actions).
 
