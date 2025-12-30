@@ -248,11 +248,102 @@ Aquí podrás probar los endpoints, ver los esquemas de datos y autenticarte.
 
 ---
 
-## 🗂️ Datos Iniciales
+## 🗂️ Inicialización de Datos
 
-Una vez iniciada la aplicación, puedes crear los datos iniciales:
+Antes de usar el sistema, debes crear los datos básicos: **Roles** y **Áreas**. Sin ellos, no podrás crear usuarios.
 
-### Roles disponibles
+### 📥 Opción 1: Usar Colección de Postman (Recomendado)
+
+Importa la colección de Postman incluida en el proyecto:
+
+1. Abre Postman
+2. Click en **Import** → **File**
+3. Selecciona: `postman/Soporte-API-Init.postman_collection.json`
+4. Ejecuta las carpetas en orden:
+   - `1. Crear Roles` (ejecutar todos los requests)
+   - `2. Crear Áreas` (ejecutar todos los requests)
+   - `3. Crear Usuarios` (opcional, usuarios de ejemplo)
+
+### 🖥️ Opción 2: Usar PowerShell (Windows)
+
+#### Paso 1: Crear los Roles
+
+```powershell
+# Crear rol ADMIN
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ADMIN", "description": "Administrador del sistema"}'
+
+# Crear rol SUPERVISOR
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
+
+# Crear rol ANALYST
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ANALYST", "description": "Analista de soporte"}'
+
+# Crear rol QA
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "QA", "description": "Analista de calidad (QA)"}'
+
+# Crear rol DEVELOPER
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
+
+# Verificar roles creados
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Get | Format-Table
+```
+
+#### Paso 2: Crear las Áreas
+
+```powershell
+# Crear área Soporte
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Soporte", "description": "Área de soporte técnico"}'
+
+# Crear área Desarrollo de Software
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Desarrollo de Software", "description": "Área de desarrollo de software"}'
+
+# Crear área Marketing
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Marketing", "description": "Área de marketing"}'
+
+# Crear área Finanzas
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Finanzas", "description": "Área de finanzas"}'
+
+# Crear área Recursos Humanos
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Recursos Humanos", "description": "Área de recursos humanos"}'
+
+# Verificar áreas creadas
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Get | Format-Table
+```
+
+#### Paso 3: Crear un Usuario de Prueba
+
+```powershell
+# Crear usuario administrador
+Invoke-RestMethod -Uri "http://localhost:3000/usuarios" -Method Post -ContentType "application/json" -Body '{"firstName": "Admin", "lastName": "Sistema", "email": "admin@emmott.cl", "rut": "11111111-1", "roleId": 1, "areaId": 1}'
+```
+
+### 🐧 Opción 3: Usar cURL (Linux/Mac)
+
+```bash
+# Crear roles
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "ADMIN", "description": "Administrador del sistema"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "ANALYST", "description": "Analista de soporte"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "QA", "description": "Analista de calidad (QA)"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
+
+# Crear áreas
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Soporte", "description": "Área de soporte técnico"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Desarrollo de Software", "description": "Área de desarrollo"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Marketing", "description": "Área de marketing"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Finanzas", "description": "Área de finanzas"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Recursos Humanos", "description": "Área de RRHH"}'
+
+# Verificar
+curl http://localhost:3000/roles
+curl http://localhost:3000/areas
+```
+
+---
+
+## 📊 Datos de Referencia
+
+### Roles del Sistema
 | ID | Nombre | Descripción |
 |----|--------|-------------|
 | 1 | ADMIN | Administrador del sistema |
@@ -261,7 +352,7 @@ Una vez iniciada la aplicación, puedes crear los datos iniciales:
 | 4 | QA | Analista de calidad |
 | 5 | DEVELOPER | Desarrollador de software |
 
-### Áreas disponibles
+### Áreas del Sistema
 | ID | Nombre | Descripción |
 |----|--------|-------------|
 | 1 | Soporte | Área de soporte técnico |
@@ -270,9 +361,11 @@ Una vez iniciada la aplicación, puedes crear los datos iniciales:
 | 4 | Finanzas | Área de finanzas |
 | 5 | Recursos Humanos | Área de RRHH |
 
-### Ejemplo: Crear un usuario
+### Ejemplo Completo: Crear un Usuario
 ```json
-POST /usuarios
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+
 {
   "firstName": "Juan",
   "lastName": "Pérez",
@@ -280,6 +373,31 @@ POST /usuarios
   "rut": "12345678-9",
   "roleId": 5,
   "areaId": 2
+}
+```
+
+**Respuesta esperada:**
+```json
+{
+  "id": 1,
+  "publicId": "uuid-generado",
+  "firstName": "Juan",
+  "lastName": "Pérez",
+  "email": "juan.perez@empresa.com",
+  "rut": "12345678-9",
+  "status": "ACTIVE",
+  "role": {
+    "id": 5,
+    "name": "DEVELOPER",
+    "description": "Desarrollador de software"
+  },
+  "area": {
+    "id": 2,
+    "name": "Desarrollo de Software",
+    "description": "Área de desarrollo"
+  },
+  "createdAt": "2025-12-30T18:00:00.000Z",
+  "updatedAt": "2025-12-30T18:00:00.000Z"
 }
 ```
 
