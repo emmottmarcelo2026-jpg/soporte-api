@@ -21,15 +21,19 @@ Este proyecto va más allá de un simple CRUD: simula un entorno de producción 
     - [🎫 Gestión de Tickets (Help Desk)](#-gestión-de-tickets-help-desk)
     - [🏢 Gestión de Clientes (CRM Light)](#-gestión-de-clientes-crm-light)
     - [💳 Suscripciones y Módulos](#-suscripciones-y-módulos)
+    - [👥 Gestión de Usuarios y Roles](#-gestión-de-usuarios-y-roles)
+    - [🏛️ Gestión de Áreas](#️-gestión-de-áreas)
     - [📊 Dashboard y Métricas (Planned)](#-dashboard-y-métricas-planned)
   - [🏗️ Arquitectura y Diseño](#️-arquitectura-y-diseño)
     - [Diagrama de Módulos](#diagrama-de-módulos)
     - [Principios Aplicados](#principios-aplicados)
   - [📦 Stack Tecnológico](#-stack-tecnológico)
   - [⚙️ Pre-requisitos](#️-pre-requisitos)
-  - [� Instalación y Configuración](#-instalación-y-configuración)
+  - [🔧 Instalación y Configuración](#-instalación-y-configuración)
   - [📚 Documentación API](#-documentación-api)
-  - [�️ Roadmap](#️-roadmap)
+  - [📋 Endpoints Disponibles](#-endpoints-disponibles)
+  - [🗂️ Datos Iniciales](#️-datos-iniciales)
+  - [🛣️ Roadmap](#️-roadmap)
   - [📄 Licencia](#-licencia)
 
 ---
@@ -63,6 +67,25 @@ Algunas se encuentran actualmente en desarrollo según el roadmap.
 - Control de qué módulos del ERP ha contratado cada cliente (ej. Contabilidad, RRHH, Inventario).
 - Validación de soporte activo antes de permitir la creación de tickets.
 
+### 👥 Gestión de Usuarios y Roles
+- CRUD completo de usuarios del sistema.
+- Asignación de roles con diferentes niveles de acceso.
+- Roles predefinidos:
+  - **ADMIN**: Administrador del sistema
+  - **SUPERVISOR**: Supervisor de área
+  - **ANALYST**: Analista de soporte
+  - **QA**: Analista de calidad
+  - **DEVELOPER**: Desarrollador de software
+
+### 🏛️ Gestión de Áreas
+- Organización de usuarios por áreas funcionales.
+- Áreas predefinidas:
+  - Soporte
+  - Desarrollo de Software
+  - Marketing
+  - Finanzas
+  - Recursos Humanos
+
 ### 📊 Dashboard y Métricas (Planned)
 - Reportes de tickets por área.
 - Tiempos promedios de respuesta y resolución.
@@ -79,19 +102,25 @@ graph TD
     A[Client Request] --> B{API Gateway / Controller}
     B --> C[Tickets Module]
     B --> D[Companies Module]
-    B --> E[Auth Module]
+    B --> E[Users Module]
+    B --> F[Roles Module]
+    B --> G[Areas Module]
     
-    C --> F[(PostgreSQL)]
-    D --> F
-    E --> F
+    C --> H[(PostgreSQL)]
+    D --> H
+    E --> H
+    F --> H
+    G --> H
     
     subgraph "Core Business Logic"
     C
     D
     end
     
-    subgraph "Support Logic"
+    subgraph "User Management"
     E
+    F
+    G
     end
 ```
 
@@ -126,7 +155,7 @@ Asegúrate de tener instalado en tu sistema:
 
 ---
 
-## � Instalación y Configuración
+## 🔧 Instalación y Configuración
 
 Sigue estos pasos para levantar el entorno de desarrollo localmente:
 
@@ -152,6 +181,9 @@ Sigue estos pasos para levantar el entorno de desarrollo localmente:
     ```bash
     docker-compose up -d
     ```
+    Esto levantará:
+    - **PostgreSQL** en puerto `5432`
+    - **Adminer** (gestor de BD) en puerto `8080`
 
 5.  **Ejecutar el Servidor**
     ```bash
@@ -174,13 +206,215 @@ Aquí podrás probar los endpoints, ver los esquemas de datos y autenticarte.
 
 ---
 
-## �️ Roadmap
+## 📋 Endpoints Disponibles
+
+| Recurso | Método | Endpoint | Descripción |
+|---------|--------|----------|-------------|
+| **Empresas** | GET | `/empresas` | Listar todas las empresas |
+| | POST | `/empresas` | Crear una empresa |
+| | GET | `/empresas/:id` | Obtener empresa por ID |
+| | PATCH | `/empresas/:id` | Actualizar empresa |
+| | DELETE | `/empresas/:id` | Eliminar empresa |
+| **Contactos** | GET | `/contactos` | Listar todos los contactos |
+| | POST | `/contactos` | Crear un contacto |
+| | GET | `/contactos/:id` | Obtener contacto por ID |
+| | PATCH | `/contactos/:id` | Actualizar contacto |
+| | DELETE | `/contactos/:id` | Eliminar contacto |
+| **Suscripciones** | GET | `/suscripciones` | Listar todas las suscripciones |
+| | POST | `/suscripciones` | Crear una suscripción |
+| | GET | `/suscripciones/:id` | Obtener suscripción por ID |
+| | PATCH | `/suscripciones/:id` | Actualizar suscripción |
+| | DELETE | `/suscripciones/:id` | Eliminar suscripción |
+| **Áreas** | GET | `/areas` | Listar todas las áreas |
+| | POST | `/areas` | Crear un área |
+| | GET | `/areas/:id` | Obtener área por ID |
+| | PATCH | `/areas/:id` | Actualizar área |
+| | DELETE | `/areas/:id` | Eliminar área |
+| **Usuarios** | GET | `/usuarios` | Listar todos los usuarios |
+| | POST | `/usuarios` | Crear un usuario |
+| | GET | `/usuarios/:id` | Obtener usuario por ID |
+| | PATCH | `/usuarios/:id` | Actualizar usuario |
+| | DELETE | `/usuarios/:id` | Eliminar usuario |
+| **Roles** | GET | `/roles` | Listar todos los roles |
+| | POST | `/roles` | Crear un rol |
+| | GET | `/roles/:id` | Obtener rol por ID |
+| | PATCH | `/roles/:id` | Actualizar rol |
+| | DELETE | `/roles/:id` | Eliminar rol |
+| **Tickets** | GET | `/tickets` | Listar todos los tickets |
+| | POST | `/tickets` | Crear un ticket |
+| | GET | `/tickets/:id` | Obtener ticket por ID |
+| | PATCH | `/tickets/:id` | Actualizar ticket |
+| | DELETE | `/tickets/:id` | Eliminar ticket |
+
+---
+
+## 🗂️ Inicialización de Datos
+
+Antes de usar el sistema, debes crear los datos básicos: **Roles** y **Áreas**. Sin ellos, no podrás crear usuarios.
+
+### 📥 Opción 1: Usar Colección de Postman (Recomendado)
+
+Importa la colección de Postman incluida en el proyecto:
+
+1. Abre Postman
+2. Click en **Import** → **File**
+3. Selecciona: `postman/Soporte-API-Init.postman_collection.json`
+4. Ejecuta las carpetas en orden:
+   - `1. Crear Roles` (ejecutar todos los requests)
+   - `2. Crear Áreas` (ejecutar todos los requests)
+   - `3. Crear Usuarios` (opcional, usuarios de ejemplo)
+
+### 🖥️ Opción 2: Usar PowerShell (Windows)
+
+#### Paso 1: Crear los Roles
+
+```powershell
+# Crear rol ADMIN
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ADMIN", "description": "Administrador del sistema"}'
+
+# Crear rol SUPERVISOR
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
+
+# Crear rol ANALYST
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ANALYST", "description": "Analista de soporte"}'
+
+# Crear rol QA
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "QA", "description": "Analista de calidad (QA)"}'
+
+# Crear rol DEVELOPER
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
+
+# Verificar roles creados
+Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Get | Format-Table
+```
+
+#### Paso 2: Crear las Áreas
+
+```powershell
+# Crear área Soporte
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Soporte", "description": "Área de soporte técnico"}'
+
+# Crear área Desarrollo de Software
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Desarrollo de Software", "description": "Área de desarrollo de software"}'
+
+# Crear área Marketing
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Marketing", "description": "Área de marketing"}'
+
+# Crear área Finanzas
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Finanzas", "description": "Área de finanzas"}'
+
+# Crear área Recursos Humanos
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Recursos Humanos", "description": "Área de recursos humanos"}'
+
+# Verificar áreas creadas
+Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Get | Format-Table
+```
+
+#### Paso 3: Crear un Usuario de Prueba
+
+```powershell
+# Crear usuario administrador
+Invoke-RestMethod -Uri "http://localhost:3000/usuarios" -Method Post -ContentType "application/json" -Body '{"firstName": "Admin", "lastName": "Sistema", "email": "admin@emmott.cl", "rut": "11111111-1", "roleId": 1, "areaId": 1}'
+```
+
+### 🐧 Opción 3: Usar cURL (Linux/Mac)
+
+```bash
+# Crear roles
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "ADMIN", "description": "Administrador del sistema"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "ANALYST", "description": "Analista de soporte"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "QA", "description": "Analista de calidad (QA)"}'
+curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
+
+# Crear áreas
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Soporte", "description": "Área de soporte técnico"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Desarrollo de Software", "description": "Área de desarrollo"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Marketing", "description": "Área de marketing"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Finanzas", "description": "Área de finanzas"}'
+curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Recursos Humanos", "description": "Área de RRHH"}'
+
+# Verificar
+curl http://localhost:3000/roles
+curl http://localhost:3000/areas
+```
+
+---
+
+## 📊 Datos de Referencia
+
+### Roles del Sistema
+| ID | Nombre | Descripción |
+|----|--------|-------------|
+| 1 | ADMIN | Administrador del sistema |
+| 2 | SUPERVISOR | Supervisor de área |
+| 3 | ANALYST | Analista de soporte |
+| 4 | QA | Analista de calidad |
+| 5 | DEVELOPER | Desarrollador de software |
+
+### Áreas del Sistema
+| ID | Nombre | Descripción |
+|----|--------|-------------|
+| 1 | Soporte | Área de soporte técnico |
+| 2 | Desarrollo de Software | Área de desarrollo |
+| 3 | Marketing | Área de marketing |
+| 4 | Finanzas | Área de finanzas |
+| 5 | Recursos Humanos | Área de RRHH |
+
+### Ejemplo Completo: Crear un Usuario
+```json
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+
+{
+  "firstName": "Juan",
+  "lastName": "Pérez",
+  "email": "juan.perez@empresa.com",
+  "rut": "12345678-9",
+  "roleId": 5,
+  "areaId": 2
+}
+```
+
+**Respuesta esperada:**
+```json
+{
+  "id": 1,
+  "publicId": "uuid-generado",
+  "firstName": "Juan",
+  "lastName": "Pérez",
+  "email": "juan.perez@empresa.com",
+  "rut": "12345678-9",
+  "status": "ACTIVE",
+  "role": {
+    "id": 5,
+    "name": "DEVELOPER",
+    "description": "Desarrollador de software"
+  },
+  "area": {
+    "id": 2,
+    "name": "Desarrollo de Software",
+    "description": "Área de desarrollo"
+  },
+  "createdAt": "2025-12-30T18:00:00.000Z",
+  "updatedAt": "2025-12-30T18:00:00.000Z"
+}
+```
+
+---
+
+## 🛣️ Roadmap
 
 - [x] Configuración inicial del proyecto y Docker.
 - [x] Conexión a Base de Datos PostgreSQL.
 - [x] Implementación del módulo de **Empresas**.
+- [x] Implementación del módulo de **Contactos**.
+- [x] Implementación del módulo de **Suscripciones**.
+- [x] Implementación del módulo de **Áreas** (CRUD completo).
+- [x] Implementación del módulo de **Roles** (CRUD completo).
+- [x] Implementación del módulo de **Usuarios** (CRUD completo).
+- [x] Implementación del módulo de **Tickets**.
 - [ ] Implementación de **Autenticación (JWT)**.
-- [ ] Implementación del módulo de **Tickets**.
 - [ ] Tests unitarios y de integración.
 - [ ] Pipeline CI/CD (GitHub Actions).
 
