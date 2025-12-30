@@ -1,7 +1,7 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -11,30 +11,30 @@ async function bootstrap() {
   // ==================== CORS ====================
   // Necesario para que Next.js pueda comunicarse con esta API
   app.enableCors({
-    // Orígenes permitidos (puedes agregar más separados por coma)
     origin: [
-      'http://localhost:3000', // Next.js en desarrollo (si cambian el puerto de la API)
-      'http://localhost:3001', // Next.js alternativo
-      'http://localhost:5173', // Vite
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:5173',
       configService.get<string>('FRONTEND_URL') || 'http://localhost:3001',
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    credentials: true, // Permite enviar cookies/tokens
+    credentials: true,
   });
 
   // ==================== Validación Global ====================
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Remueve propiedades no definidas en DTO
-      transform: true, // Transforma tipos automáticamente
-      forbidNonWhitelisted: true, // Error si envían propiedades no permitidas
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
     }),
   );
 
-  // ==================== Prefijo Global (opcional) ====================
-  // Descomenta si quieres que todas las rutas tengan /api/v1/...
-  // app.setGlobalPrefix('api/v1');
+  // ==================== Serialización ====================
+  // Activa @Exclude() y @Expose() de class-transformer
+  // Esto asegura que campos como passwordHash NUNCA se serialicen
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // ==================== Swagger ====================
   const config = new DocumentBuilder()
