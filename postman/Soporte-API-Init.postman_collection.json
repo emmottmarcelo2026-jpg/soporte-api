@@ -1,380 +1,252 @@
 {
   "info": {
     "_postman_id": "soporte-api-init",
-    "name": "Soporte API - Inicialización",
-    "description": "Colección para inicializar datos básicos del sistema de soporte Emmott Systems",
+    "name": "Soporte API - Emmott Systems",
+    "description": "Colección completa para el sistema de soporte Emmott Systems. Incluye inicialización, autenticación y CRUD completo.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:3000",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
       "type": "string"
     }
   ],
   "item": [
     {
-      "name": "1. Crear Roles",
+      "name": "1. Crear Roles (Ejecutar primero)",
       "item": [
         {
           "name": "1.1 Crear Rol ADMIN",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"ADMIN\",\n  \"description\": \"Administrador del sistema\"\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
           }
         },
         {
           "name": "1.2 Crear Rol SUPERVISOR",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"SUPERVISOR\",\n  \"description\": \"Supervisor de área\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"SUPERVISOR\",\n  \"description\": \"Supervisor de área\"\n}" },
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
           }
         },
         {
           "name": "1.3 Crear Rol ANALYST",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"ANALYST\",\n  \"description\": \"Analista de soporte\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"ANALYST\",\n  \"description\": \"Analista de soporte\"\n}" },
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
           }
         },
         {
           "name": "1.4 Crear Rol QA",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"QA\",\n  \"description\": \"Analista de calidad (QA)\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"QA\",\n  \"description\": \"Analista de calidad (QA)\"\n}" },
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
           }
         },
         {
           "name": "1.5 Crear Rol DEVELOPER",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"DEVELOPER\",\n  \"description\": \"Desarrollador de software\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"DEVELOPER\",\n  \"description\": \"Desarrollador de software\"\n}" },
+            "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
           }
         },
         {
           "name": "1.6 Listar Roles",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
-          }
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] } }
         }
       ]
     },
     {
-      "name": "2. Crear Áreas",
+      "name": "2. Crear Áreas (Ejecutar segundo)",
       "item": [
         {
           "name": "2.1 Crear Área Soporte",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Soporte\",\n  \"description\": \"Área de soporte técnico\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Soporte\",\n  \"description\": \"Área de soporte técnico\"\n}" },
+            "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] }
           }
         },
         {
           "name": "2.2 Crear Área Desarrollo",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Desarrollo de Software\",\n  \"description\": \"Área de desarrollo de software\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Desarrollo de Software\",\n  \"description\": \"Área de desarrollo de software\"\n}" },
+            "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] }
           }
         },
         {
           "name": "2.3 Crear Área Marketing",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Marketing\",\n  \"description\": \"Área de marketing\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Marketing\",\n  \"description\": \"Área de marketing\"\n}" },
+            "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] }
           }
         },
         {
           "name": "2.4 Crear Área Finanzas",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Finanzas\",\n  \"description\": \"Área de finanzas\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Finanzas\",\n  \"description\": \"Área de finanzas\"\n}" },
+            "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] }
           }
         },
         {
           "name": "2.5 Crear Área RRHH",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Recursos Humanos\",\n  \"description\": \"Área de recursos humanos\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Recursos Humanos\",\n  \"description\": \"Área de recursos humanos\"\n}" },
+            "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] }
           }
         },
         {
           "name": "2.6 Listar Áreas",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] } }
+        }
+      ]
+    },
+    {
+      "name": "3. 🔐 Autenticación",
+      "item": [
+        {
+          "name": "3.1 🚀 Setup Inicial (Crear primer Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.access_token) {",
+                  "    pm.collectionVariables.set('jwt_token', jsonData.access_token);",
+                  "    console.log('Token guardado automáticamente');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Admin\",\n  \"lastName\": \"Sistema\",\n  \"email\": \"admin@emmott.cl\",\n  \"password\": \"AdminPassword123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/setup", "host": ["{{baseUrl}}"], "path": ["auth", "setup"] }
+          }
+        },
+        {
+          "name": "3.2 Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.access_token) {",
+                  "    pm.collectionVariables.set('jwt_token', jsonData.access_token);",
+                  "    console.log('Token guardado automáticamente');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@emmott.cl\",\n  \"password\": \"AdminPassword123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "3.3 Mi Perfil (Requiere Auth)",
           "request": {
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
+            "url": { "raw": "{{baseUrl}}/auth/profile", "host": ["{{baseUrl}}"], "path": ["auth", "profile"] }
+          }
+        },
+        {
+          "name": "3.4 Registrar Usuario (Requiere Auth)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"email\": \"juan.perez@emmott.cl\",\n  \"password\": \"JuanPassword123\",\n  \"rut\": \"12345678-9\",\n  \"roleId\": 5,\n  \"areaId\": 2\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
           }
         }
       ]
     },
     {
-      "name": "3. Crear Usuarios",
+      "name": "4. Usuarios",
       "item": [
         {
-          "name": "3.1 Crear Usuario Admin",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Admin\",\n  \"lastName\": \"Sistema\",\n  \"email\": \"admin@emmott.cl\",\n  \"rut\": \"11111111-1\",\n  \"roleId\": 1,\n  \"areaId\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
-            }
-          }
+          "name": "4.1 Listar Usuarios",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] } }
         },
         {
-          "name": "3.2 Crear Usuario Desarrollador",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"email\": \"juan.perez@emmott.cl\",\n  \"rut\": \"12345678-9\",\n  \"roleId\": 5,\n  \"areaId\": 2\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
-            }
-          }
-        },
-        {
-          "name": "3.3 Crear Usuario Analista",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"María\",\n  \"lastName\": \"González\",\n  \"email\": \"maria.gonzalez@emmott.cl\",\n  \"rut\": \"98765432-1\",\n  \"roleId\": 3,\n  \"areaId\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
-            }
-          }
-        },
-        {
-          "name": "3.4 Listar Usuarios",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
-            }
-          }
+          "name": "4.2 Obtener Usuario por ID",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios/1", "host": ["{{baseUrl}}"], "path": ["usuarios", "1"] } }
         }
       ]
     },
     {
-      "name": "4. Verificar Sistema",
+      "name": "5. Verificar Sistema",
       "item": [
         {
-          "name": "4.1 Listar Roles",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": ["{{baseUrl}}"],
-              "path": ["roles"]
-            }
-          }
+          "name": "5.1 Listar Roles",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] } }
         },
         {
-          "name": "4.2 Listar Áreas",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/areas",
-              "host": ["{{baseUrl}}"],
-              "path": ["areas"]
-            }
-          }
+          "name": "5.2 Listar Áreas",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/areas", "host": ["{{baseUrl}}"], "path": ["areas"] } }
         },
         {
-          "name": "4.3 Listar Usuarios",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
-            }
-          }
+          "name": "5.3 Listar Usuarios",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] } }
         }
       ]
     }
