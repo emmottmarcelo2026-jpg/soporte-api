@@ -1,7 +1,15 @@
-import { Area } from "src/areas/entities/area.entity";
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { UserStatus } from "../enums/user-status.enum";
-import { Role } from "../roles/entities/role.entity";
+import { Exclude } from 'class-transformer';
+import { Area } from 'src/areas/entities/area.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { UserStatus } from '../enums/user-status.enum';
+import { Role } from '../roles/entities/role.entity';
 
 @Entity('usuarios')
 export class Usuario {
@@ -27,8 +35,14 @@ export class Usuario {
   @Column({ unique: true })
   email: string;
 
+  /**
+   * Hash de la contraseña (bcrypt)
+   * - select: false → No se incluye en queries por defecto
+   * - @Exclude() → Nunca se serializa en respuestas JSON
+   */
+  @Exclude()
   @Column({ nullable: true, select: false })
-  passwordHash?: string; // preparado, no usado aún
+  passwordHash?: string;
 
   @ManyToOne(() => Role, { eager: true })
   role: Role;

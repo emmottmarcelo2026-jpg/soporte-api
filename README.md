@@ -4,6 +4,7 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
 
 Backend de soporte técnico empresarial para **Emmott Systems**, diseñado para gestionar el ciclo de vida completo de incidencias y suscripciones de un ERP contable.
@@ -14,27 +15,18 @@ Este proyecto va más allá de un simple CRUD: simula un entorno de producción 
 
 ## 📖 Tabla de Contenidos
 
-- [🚀 Emmott Systems – Support API](#-emmott-systems--support-api)
-  - [📖 Tabla de Contenidos](#-tabla-de-contenidos)
-  - [🧠 Contexto del Proyecto](#-contexto-del-proyecto)
-  - [✨ Funcionalidades (Diseño del Sistema)](#-funcionalidades-diseño-del-sistema)
-    - [🎫 Gestión de Tickets (Help Desk)](#-gestión-de-tickets-help-desk)
-    - [🏢 Gestión de Clientes (CRM Light)](#-gestión-de-clientes-crm-light)
-    - [💳 Suscripciones y Módulos](#-suscripciones-y-módulos)
-    - [👥 Gestión de Usuarios y Roles](#-gestión-de-usuarios-y-roles)
-    - [🏛️ Gestión de Áreas](#️-gestión-de-áreas)
-    - [📊 Dashboard y Métricas (Planned)](#-dashboard-y-métricas-planned)
-  - [🏗️ Arquitectura y Diseño](#️-arquitectura-y-diseño)
-    - [Diagrama de Módulos](#diagrama-de-módulos)
-    - [Principios Aplicados](#principios-aplicados)
-  - [📦 Stack Tecnológico](#-stack-tecnológico)
-  - [⚙️ Pre-requisitos](#️-pre-requisitos)
-  - [🔧 Instalación y Configuración](#-instalación-y-configuración)
-  - [📚 Documentación API](#-documentación-api)
-  - [📋 Endpoints Disponibles](#-endpoints-disponibles)
-  - [🗂️ Datos Iniciales](#️-datos-iniciales)
-  - [🛣️ Roadmap](#️-roadmap)
-  - [📄 Licencia](#-licencia)
+- [🧠 Contexto del Proyecto](#-contexto-del-proyecto)
+- [✨ Funcionalidades](#-funcionalidades)
+- [🔐 Autenticación JWT](#-autenticación-jwt)
+- [🏗️ Arquitectura y Diseño](#️-arquitectura-y-diseño)
+- [📦 Stack Tecnológico](#-stack-tecnológico)
+- [⚙️ Pre-requisitos](#️-pre-requisitos)
+- [🔧 Instalación y Configuración](#-instalación-y-configuración)
+- [🚀 Inicialización del Sistema](#-inicialización-del-sistema)
+- [📚 Documentación API](#-documentación-api)
+- [📋 Endpoints Disponibles](#-endpoints-disponibles)
+- [🛣️ Roadmap](#️-roadmap)
+- [📄 Licencia](#-licencia)
 
 ---
 
@@ -43,16 +35,13 @@ Este proyecto va más allá de un simple CRUD: simula un entorno de producción 
 **Emmott Systems** provee software contable (SaaS). A medida que la base de clientes crece, la gestión de incidencias vía email se vuelve insostenible.
 
 Este backend es la solución centralizada para el equipo de **Soporte Nivel 1 y 2**, permitiendo:
-1.  **Centralización**: Un único punto de verdad para tickets, clientes y contratos.
-2.  **Trazabilidad**: Historial completo de interacciones y cambios de estado.
-3.  **Eficiencia**: Asignación inteligente de tickets basada en la carga de trabajo y especialidad del analista.
+1. **Centralización**: Un único punto de verdad para tickets, clientes y contratos.
+2. **Trazabilidad**: Historial completo de interacciones y cambios de estado.
+3. **Eficiencia**: Asignación inteligente de tickets basada en la carga de trabajo y especialidad del analista.
 
 ---
 
-## ✨ Funcionalidades (Diseño del Sistema)
-
-Las siguientes funcionalidades describen el diseño objetivo del sistema.
-Algunas se encuentran actualmente en desarrollo según el roadmap.
+## ✨ Funcionalidades
 
 ### 🎫 Gestión de Tickets (Help Desk)
 - Creación de tickets con prioridades (Alta, Media, Baja) y SLA definidos.
@@ -64,367 +53,357 @@ Algunas se encuentran actualmente en desarrollo según el roadmap.
 - Gestión de contactos autorizados para crear tickets.
 
 ### 💳 Suscripciones y Módulos
-- Control de qué módulos del ERP ha contratado cada cliente (ej. Contabilidad, RRHH, Inventario).
+- Control de qué módulos del ERP ha contratado cada cliente.
 - Validación de soporte activo antes de permitir la creación de tickets.
 
 ### 👥 Gestión de Usuarios y Roles
 - CRUD completo de usuarios del sistema.
 - Asignación de roles con diferentes niveles de acceso.
-- Roles predefinidos:
-  - **ADMIN**: Administrador del sistema
-  - **SUPERVISOR**: Supervisor de área
-  - **ANALYST**: Analista de soporte
-  - **QA**: Analista de calidad
-  - **DEVELOPER**: Desarrollador de software
+- Roles: ADMIN, SUPERVISOR, ANALYST, QA, DEVELOPER
 
 ### 🏛️ Gestión de Áreas
 - Organización de usuarios por áreas funcionales.
-- Áreas predefinidas:
-  - Soporte
-  - Desarrollo de Software
-  - Marketing
-  - Finanzas
-  - Recursos Humanos
+- Áreas: Soporte, Desarrollo, Marketing, Finanzas, RRHH
 
-### 📊 Dashboard y Métricas (Planned)
-- Reportes de tickets por área.
-- Tiempos promedios de respuesta y resolución.
+---
+
+## 🔐 Autenticación JWT
+
+El sistema implementa autenticación robusta basada en **JSON Web Tokens (JWT)** usando Passport.js.
+
+### Características de Seguridad
+
+| Característica | Implementación |
+|----------------|----------------|
+| **Hash de contraseñas** | bcrypt con 10 rounds de salt |
+| **Tokens JWT** | Firmados con clave secreta (env) |
+| **Expiración** | Configurable (default: 24h) |
+| **Guards** | Protección de rutas a nivel de endpoint |
+| **Strategies** | Local (login) + JWT (rutas protegidas) |
+
+### Flujo de Autenticación
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    FLUJO DE AUTENTICACIÓN                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. POST /auth/setup (solo primera vez)                     │
+│     → Crea el primer administrador                          │
+│     → Retorna token JWT                                     │
+│                                                             │
+│  2. POST /auth/login                                        │
+│     → Valida email + password                               │
+│     → Retorna token JWT + info usuario                      │
+│                                                             │
+│  3. Requests a rutas protegidas                             │
+│     Header: Authorization: Bearer <token>                   │
+│     → JwtStrategy valida el token                           │
+│     → Si es válido, permite acceso                          │
+│                                                             │
+│  4. POST /auth/register (requiere token)                    │
+│     → Solo usuarios autenticados pueden crear otros         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Endpoints de Autenticación
+
+| Método | Endpoint | Auth | Descripción |
+|--------|----------|------|-------------|
+| `POST` | `/auth/setup` | ❌ | Crear primer admin (solo funciona 1 vez) |
+| `POST` | `/auth/login` | ❌ | Iniciar sesión |
+| `POST` | `/auth/register` | 🔒 | Registrar nuevo usuario |
+| `GET` | `/auth/profile` | 🔒 | Obtener perfil del usuario autenticado |
+
+### Estructura del Token JWT
+
+```json
+{
+  "sub": 1,                    // ID del usuario
+  "email": "admin@emmott.cl",  // Email
+  "role": "ADMIN",             // Rol del usuario
+  "iat": 1704048000,           // Issued at (timestamp)
+  "exp": 1704134400            // Expiration (timestamp)
+}
+```
+
+### Ejemplo de uso con fetch (Next.js/React)
+
+```typescript
+// Login
+const login = async (email: string, password: string) => {
+  const res = await fetch('http://localhost:4000/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  localStorage.setItem('token', data.access_token);
+  return data;
+};
+
+// Request autenticada
+const getProfile = async () => {
+  const token = localStorage.getItem('token');
+  const res = await fetch('http://localhost:4000/auth/profile', {
+    headers: { 'Authorization': `Bearer ${token}` },
+  });
+  return res.json();
+};
+```
 
 ---
 
 ## 🏗️ Arquitectura y Diseño
 
-El proyecto sigue una arquitectura de **Monolito Modular**, preparando el terreno para una eventual migración a microservicios si fuese necesario.
+El proyecto sigue una arquitectura de **Monolito Modular**.
 
 ### Diagrama de Módulos
 ```mermaid
 graph TD
     A[Client Request] --> B{API Gateway / Controller}
-    B --> C[Tickets Module]
-    B --> D[Companies Module]
-    B --> E[Users Module]
-    B --> F[Roles Module]
-    B --> G[Areas Module]
+    B --> C[Auth Module]
+    B --> D[Tickets Module]
+    B --> E[Companies Module]
+    B --> F[Users Module]
     
-    C --> H[(PostgreSQL)]
-    D --> H
-    E --> H
-    F --> H
-    G --> H
+    C --> G[(PostgreSQL)]
+    D --> G
+    E --> G
+    F --> G
     
-    subgraph "Core Business Logic"
+    subgraph "Security Layer"
     C
-    D
     end
     
-    subgraph "User Management"
+    subgraph "Business Logic"
+    D
     E
     F
-    G
     end
 ```
 
 ### Principios Aplicados
-- **Domain-Driven Design (DDD) – Enfoque conceptual**: Separación clara por contextos delimitados.
-- **Dependency Injection**: Uso nativo del contenedor de NestJS para mejorar la testabilidad.
-- **DTOs (Data Transfer Objects)**: Validación estricta de datos de entrada usando `class-validator`.
-- **Repository Pattern**: Abstracción de la capa de datos con TypeORM.
+- **Domain-Driven Design (DDD)**: Separación por contextos delimitados.
+- **Dependency Injection**: Contenedor nativo de NestJS.
+- **DTOs**: Validación estricta con `class-validator`.
+- **Repository Pattern**: Abstracción con TypeORM.
+- **Guards & Strategies**: Patrón de autenticación con Passport.js.
 
 ---
 
 ## 📦 Stack Tecnológico
 
-| Area | Tecnología | Uso |
+| Área | Tecnología | Uso |
 |------|------------|-----|
-| **Core** | [NestJS](https://nestjs.com/) | Framework principal del backend |
-| **Lenguaje** | [TypeScript](https://www.typescriptlang.org/) | Tipado estático y seguridad |
-| **Base de Datos** | [PostgreSQL](https://www.postgresql.org/) | Persistencia relacional robusta |
+| **Core** | [NestJS](https://nestjs.com/) | Framework principal |
+| **Lenguaje** | [TypeScript](https://www.typescriptlang.org/) | Tipado estático |
+| **Base de Datos** | [PostgreSQL](https://www.postgresql.org/) | Persistencia |
 | **ORM** | [TypeORM](https://typeorm.io/) | Mapeo objeto-relacional |
-| **Contenerización** | [Docker](https://www.docker.com/) | Entorno de desarrollo reproducible |
-| **API Docs** | [Swagger](https://swagger.io/) | Documentación interactiva (OpenAPI 3.0) |
-| **Testing** | [Jest](https://jestjs.io/) | Unit & Integration Testing |
+| **Autenticación** | [Passport.js](http://www.passportjs.org/) + JWT | Auth & Authorization |
+| **Seguridad** | [bcrypt](https://www.npmjs.com/package/bcrypt) | Hash de contraseñas |
+| **Contenerización** | [Docker](https://www.docker.com/) | Entorno reproducible |
+| **API Docs** | [Swagger](https://swagger.io/) | Documentación OpenAPI |
+| **Testing** | [Jest](https://jestjs.io/) | Unit & Integration Tests |
 
 ---
 
 ## ⚙️ Pre-requisitos
 
-Asegúrate de tener instalado en tu sistema:
-- **Node.js** v18 o superior.
-- **Docker Desktop** (con Docker Compose).
+- **Node.js** v18 o superior
+- **Docker Desktop** (con Docker Compose)
 - **Git**
 
 ---
 
 ## 🔧 Instalación y Configuración
 
-Sigue estos pasos para levantar el entorno de desarrollo localmente:
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/tu-usuario/soporte-api.git
+cd soporte-api
+```
 
-1.  **Clonar el repositorio**
-    ```bash
-    git clone https://github.com/tu-usuario/soporte-api.git
-    cd soporte-api
-    ```
+### 2. Configurar Variables de Entorno
+```bash
+cp .env.example .env
+```
 
-2.  **Configurar Variables de Entorno**
-    Crea un archivo `.env` en la raíz basado en el ejemplo:
-    ```bash
-    cp .env.example .env
-    ```
-    *(Asegúrate de que las credenciales de DB coincidan con tu docker-compose)*
+Edita `.env` con tus valores:
+```env
+# Base de datos
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=tu_password
+DB_NAME=soporte_db
 
-3.  **Instalar Dependencias**
-    ```bash
-    npm install
-    ```
+# JWT (IMPORTANTE: cambia esto en producción)
+JWT_SECRET=tu_clave_secreta_muy_segura_y_larga_aqui
+JWT_EXPIRES_IN=86400
 
-4.  **Levantar Base de Datos (Docker)**
-    ```bash
-    docker-compose up -d
-    ```
-    Esto levantará:
-    - **PostgreSQL** en puerto `5432`
-    - **Adminer** (gestor de BD) en puerto `8080`
+# API
+PORT=4000
+FRONTEND_URL=http://localhost:3000
+```
 
-5.  **Ejecutar el Servidor**
-    ```bash
-    # Modo desarrollo (con hot-reload)
-    npm run start:dev
-    ```
+### 3. Instalar dependencias
+```bash
+npm install
+```
 
-El servidor estará corriendo en: `http://localhost:3000`
+### 4. Levantar Base de Datos
+```bash
+docker-compose up -d
+```
+Esto levanta:
+- **PostgreSQL** en puerto `5432`
+- **Adminer** (gestor BD) en puerto `8080`
+
+### 5. Ejecutar el servidor
+```bash
+npm run start:dev
+```
+
+---
+
+## 🚀 Inicialización del Sistema
+
+### Paso 1: Crear Roles (ejecutar una vez)
+
+```bash
+# PowerShell
+Invoke-RestMethod -Uri "http://localhost:4000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ADMIN", "description": "Administrador del sistema"}'
+Invoke-RestMethod -Uri "http://localhost:4000/roles" -Method Post -ContentType "application/json" -Body '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
+Invoke-RestMethod -Uri "http://localhost:4000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ANALYST", "description": "Analista de soporte"}'
+Invoke-RestMethod -Uri "http://localhost:4000/roles" -Method Post -ContentType "application/json" -Body '{"name": "QA", "description": "Analista de calidad"}'
+Invoke-RestMethod -Uri "http://localhost:4000/roles" -Method Post -ContentType "application/json" -Body '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
+```
+
+### Paso 2: Crear Áreas (ejecutar una vez)
+
+```bash
+Invoke-RestMethod -Uri "http://localhost:4000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Soporte", "description": "Área de soporte técnico"}'
+Invoke-RestMethod -Uri "http://localhost:4000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Desarrollo de Software", "description": "Área de desarrollo"}'
+Invoke-RestMethod -Uri "http://localhost:4000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Marketing", "description": "Área de marketing"}'
+Invoke-RestMethod -Uri "http://localhost:4000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Finanzas", "description": "Área de finanzas"}'
+Invoke-RestMethod -Uri "http://localhost:4000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Recursos Humanos", "description": "Área de recursos humanos"}'
+```
+
+### Paso 3: Crear el primer Administrador
+
+```bash
+Invoke-RestMethod -Uri "http://localhost:4000/auth/setup" -Method Post -ContentType "application/json" -Body '{"firstName": "Admin", "lastName": "Sistema", "email": "admin@emmott.cl", "password": "AdminPassword123"}'
+```
+
+**Respuesta:**
+```json
+{
+  "message": "🎉 Sistema inicializado correctamente. ¡Bienvenido!",
+  "admin": { "id": 1, "email": "admin@emmott.cl", ... },
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "next_steps": [
+    "1. Guarda el access_token para autenticarte",
+    "2. Usa POST /auth/register para crear más usuarios",
+    "3. Explora la API en /api/docs"
+  ]
+}
+```
+
+### Paso 4: Usar el sistema
+
+¡Listo! Ahora puedes:
+- Usar el token para autenticarte en Swagger
+- Crear más usuarios con `/auth/register`
+- Acceder a todas las rutas protegidas
 
 ---
 
 ## 📚 Documentación API
 
-La documentación interactiva de la API se genera automáticamente con Swagger.
+Swagger disponible en: **http://localhost:4000/api/docs**
 
-Una vez iniciada la aplicación, visita:
-👉 **[http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
-
-Aquí podrás probar los endpoints, ver los esquemas de datos y autenticarte.
+Para usar rutas protegidas:
+1. Haz login o setup
+2. Copia el `access_token`
+3. Click en **Authorize** 🔒
+4. Pega el token
+5. ¡Listo para probar!
 
 ---
 
 ## 📋 Endpoints Disponibles
 
-| Recurso | Método | Endpoint | Descripción |
-|---------|--------|----------|-------------|
-| **Empresas** | GET | `/empresas` | Listar todas las empresas |
-| | POST | `/empresas` | Crear una empresa |
-| | GET | `/empresas/:id` | Obtener empresa por ID |
-| | PATCH | `/empresas/:id` | Actualizar empresa |
-| | DELETE | `/empresas/:id` | Eliminar empresa |
-| **Contactos** | GET | `/contactos` | Listar todos los contactos |
-| | POST | `/contactos` | Crear un contacto |
-| | GET | `/contactos/:id` | Obtener contacto por ID |
-| | PATCH | `/contactos/:id` | Actualizar contacto |
-| | DELETE | `/contactos/:id` | Eliminar contacto |
-| **Suscripciones** | GET | `/suscripciones` | Listar todas las suscripciones |
-| | POST | `/suscripciones` | Crear una suscripción |
-| | GET | `/suscripciones/:id` | Obtener suscripción por ID |
-| | PATCH | `/suscripciones/:id` | Actualizar suscripción |
-| | DELETE | `/suscripciones/:id` | Eliminar suscripción |
-| **Áreas** | GET | `/areas` | Listar todas las áreas |
-| | POST | `/areas` | Crear un área |
-| | GET | `/areas/:id` | Obtener área por ID |
-| | PATCH | `/areas/:id` | Actualizar área |
-| | DELETE | `/areas/:id` | Eliminar área |
-| **Usuarios** | GET | `/usuarios` | Listar todos los usuarios |
-| | POST | `/usuarios` | Crear un usuario |
-| | GET | `/usuarios/:id` | Obtener usuario por ID |
-| | PATCH | `/usuarios/:id` | Actualizar usuario |
-| | DELETE | `/usuarios/:id` | Eliminar usuario |
-| **Roles** | GET | `/roles` | Listar todos los roles |
-| | POST | `/roles` | Crear un rol |
-| | GET | `/roles/:id` | Obtener rol por ID |
-| | PATCH | `/roles/:id` | Actualizar rol |
-| | DELETE | `/roles/:id` | Eliminar rol |
-| **Tickets** | GET | `/tickets` | Listar todos los tickets |
-| | POST | `/tickets` | Crear un ticket |
-| | GET | `/tickets/:id` | Obtener ticket por ID |
-| | PATCH | `/tickets/:id` | Actualizar ticket |
-| | DELETE | `/tickets/:id` | Eliminar ticket |
+### 🔐 Autenticación
+| Método | Endpoint | Auth | Descripción |
+|--------|----------|------|-------------|
+| `POST` | `/auth/setup` | ❌ | Setup inicial (solo 1 vez) |
+| `POST` | `/auth/login` | ❌ | Iniciar sesión |
+| `POST` | `/auth/register` | 🔒 | Registrar usuario |
+| `GET` | `/auth/profile` | 🔒 | Mi perfil |
 
----
+### 👥 Usuarios
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `POST` | `/usuarios` | Crear usuario |
+| `GET` | `/usuarios` | Listar usuarios |
+| `GET` | `/usuarios/:id` | Obtener usuario |
+| `PATCH` | `/usuarios/:id` | Actualizar usuario |
+| `DELETE` | `/usuarios/:id` | Eliminar usuario |
 
-## 🗂️ Inicialización de Datos
+### 🎭 Roles
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `POST` | `/roles` | Crear rol |
+| `GET` | `/roles` | Listar roles |
+| `GET` | `/roles/:id` | Obtener rol |
+| `PATCH` | `/roles/:id` | Actualizar rol |
+| `DELETE` | `/roles/:id` | Eliminar rol |
 
-Antes de usar el sistema, debes crear los datos básicos: **Roles** y **Áreas**. Sin ellos, no podrás crear usuarios.
+### 🏛️ Áreas
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| `POST` | `/areas` | Crear área |
+| `GET` | `/areas` | Listar áreas |
+| `GET` | `/areas/:id` | Obtener área |
+| `PATCH` | `/areas/:id` | Actualizar área |
+| `DELETE` | `/areas/:id` | Eliminar área |
 
-### 📥 Opción 1: Usar Colección de Postman (Recomendado)
-
-Importa la colección de Postman incluida en el proyecto:
-
-1. Abre Postman
-2. Click en **Import** → **File**
-3. Selecciona: `postman/Soporte-API-Init.postman_collection.json`
-4. Ejecuta las carpetas en orden:
-   - `1. Crear Roles` (ejecutar todos los requests)
-   - `2. Crear Áreas` (ejecutar todos los requests)
-   - `3. Crear Usuarios` (opcional, usuarios de ejemplo)
-
-### 🖥️ Opción 2: Usar PowerShell (Windows)
-
-#### Paso 1: Crear los Roles
-
-```powershell
-# Crear rol ADMIN
-Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ADMIN", "description": "Administrador del sistema"}'
-
-# Crear rol SUPERVISOR
-Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
-
-# Crear rol ANALYST
-Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "ANALYST", "description": "Analista de soporte"}'
-
-# Crear rol QA
-Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "QA", "description": "Analista de calidad (QA)"}'
-
-# Crear rol DEVELOPER
-Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Post -ContentType "application/json" -Body '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
-
-# Verificar roles creados
-Invoke-RestMethod -Uri "http://localhost:3000/roles" -Method Get | Format-Table
-```
-
-#### Paso 2: Crear las Áreas
-
-```powershell
-# Crear área Soporte
-Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Soporte", "description": "Área de soporte técnico"}'
-
-# Crear área Desarrollo de Software
-Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Desarrollo de Software", "description": "Área de desarrollo de software"}'
-
-# Crear área Marketing
-Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Marketing", "description": "Área de marketing"}'
-
-# Crear área Finanzas
-Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Finanzas", "description": "Área de finanzas"}'
-
-# Crear área Recursos Humanos
-Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Post -ContentType "application/json" -Body '{"name": "Recursos Humanos", "description": "Área de recursos humanos"}'
-
-# Verificar áreas creadas
-Invoke-RestMethod -Uri "http://localhost:3000/areas" -Method Get | Format-Table
-```
-
-#### Paso 3: Crear un Usuario de Prueba
-
-```powershell
-# Crear usuario administrador
-Invoke-RestMethod -Uri "http://localhost:3000/usuarios" -Method Post -ContentType "application/json" -Body '{"firstName": "Admin", "lastName": "Sistema", "email": "admin@emmott.cl", "rut": "11111111-1", "roleId": 1, "areaId": 1}'
-```
-
-### 🐧 Opción 3: Usar cURL (Linux/Mac)
-
-```bash
-# Crear roles
-curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "ADMIN", "description": "Administrador del sistema"}'
-curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "SUPERVISOR", "description": "Supervisor de área"}'
-curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "ANALYST", "description": "Analista de soporte"}'
-curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "QA", "description": "Analista de calidad (QA)"}'
-curl -X POST http://localhost:3000/roles -H "Content-Type: application/json" -d '{"name": "DEVELOPER", "description": "Desarrollador de software"}'
-
-# Crear áreas
-curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Soporte", "description": "Área de soporte técnico"}'
-curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Desarrollo de Software", "description": "Área de desarrollo"}'
-curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Marketing", "description": "Área de marketing"}'
-curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Finanzas", "description": "Área de finanzas"}'
-curl -X POST http://localhost:3000/areas -H "Content-Type: application/json" -d '{"name": "Recursos Humanos", "description": "Área de RRHH"}'
-
-# Verificar
-curl http://localhost:3000/roles
-curl http://localhost:3000/areas
-```
-
----
-
-## 📊 Datos de Referencia
-
-### Roles del Sistema
-| ID | Nombre | Descripción |
-|----|--------|-------------|
-| 1 | ADMIN | Administrador del sistema |
-| 2 | SUPERVISOR | Supervisor de área |
-| 3 | ANALYST | Analista de soporte |
-| 4 | QA | Analista de calidad |
-| 5 | DEVELOPER | Desarrollador de software |
-
-### Áreas del Sistema
-| ID | Nombre | Descripción |
-|----|--------|-------------|
-| 1 | Soporte | Área de soporte técnico |
-| 2 | Desarrollo de Software | Área de desarrollo |
-| 3 | Marketing | Área de marketing |
-| 4 | Finanzas | Área de finanzas |
-| 5 | Recursos Humanos | Área de RRHH |
-
-### Ejemplo Completo: Crear un Usuario
-```json
-POST http://localhost:3000/usuarios
-Content-Type: application/json
-
-{
-  "firstName": "Juan",
-  "lastName": "Pérez",
-  "email": "juan.perez@empresa.com",
-  "rut": "12345678-9",
-  "roleId": 5,
-  "areaId": 2
-}
-```
-
-**Respuesta esperada:**
-```json
-{
-  "id": 1,
-  "publicId": "uuid-generado",
-  "firstName": "Juan",
-  "lastName": "Pérez",
-  "email": "juan.perez@empresa.com",
-  "rut": "12345678-9",
-  "status": "ACTIVE",
-  "role": {
-    "id": 5,
-    "name": "DEVELOPER",
-    "description": "Desarrollador de software"
-  },
-  "area": {
-    "id": 2,
-    "name": "Desarrollo de Software",
-    "description": "Área de desarrollo"
-  },
-  "createdAt": "2025-12-30T18:00:00.000Z",
-  "updatedAt": "2025-12-30T18:00:00.000Z"
-}
-```
+### 🏢 Empresas, Contactos, Suscripciones, Tickets
+*(Endpoints CRUD completos disponibles)*
 
 ---
 
 ## 🛣️ Roadmap
 
-- [x] Configuración inicial del proyecto y Docker.
-- [x] Conexión a Base de Datos PostgreSQL.
-- [x] Implementación del módulo de **Empresas**.
-- [x] Implementación del módulo de **Contactos**.
-- [x] Implementación del módulo de **Suscripciones**.
-- [x] Implementación del módulo de **Áreas** (CRUD completo).
-- [x] Implementación del módulo de **Roles** (CRUD completo).
-- [x] Implementación del módulo de **Usuarios** (CRUD completo).
-- [x] Implementación del módulo de **Tickets**.
-- [ ] Implementación de **Autenticación (JWT)**.
-- [ ] Tests unitarios y de integración.
-- [ ] Pipeline CI/CD (GitHub Actions).
+- [x] Configuración inicial del proyecto y Docker
+- [x] Conexión a Base de Datos PostgreSQL
+- [x] Implementación de módulos CRUD (Empresas, Contactos, Suscripciones)
+- [x] Implementación de **Roles** (CRUD completo)
+- [x] Implementación de **Áreas** (CRUD completo)
+- [x] Implementación de **Usuarios** (CRUD completo)
+- [x] **Autenticación JWT** ✅
+  - [x] Passport.js + JWT Strategy
+  - [x] Login con email/password
+  - [x] Setup inicial del sistema
+  - [x] Registro de usuarios (protegido)
+  - [x] Guards para protección de rutas
+  - [x] CORS configurado para Next.js
+- [x] Módulo de **Tickets**
+- [ ] Autorización basada en roles
+- [ ] Tests unitarios y de integración
+- [ ] Pipeline CI/CD (GitHub Actions)
+- [ ] Refresh Tokens
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto se distribuye bajo licencia **MIT**. Puedes usarlo libremente para fines educativos o profesionales.
+Este proyecto se distribuye bajo licencia **MIT**.
 
 ---
+
 <p align="center">
-  <sub>Desarrollado con ❤️ para el portafolio profesional.</sub>
+  <sub>Desarrollado con ❤️ para el portafolio profesional</sub>
 </p>
